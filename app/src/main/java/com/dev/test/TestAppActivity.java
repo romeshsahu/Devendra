@@ -11,13 +11,19 @@ import android.view.MenuItem;
 import android.widget.Button;
 
 public class TestAppActivity extends AppCompatActivity {
-private Button button;
+    private Button button;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_test_app);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        try {
+            
+        } catch (Exception e) {
+
+        }
 // jai shree krishna ji
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -51,3 +57,4 @@ private Button button;
         return super.onOptionsItemSelected(item);
     }
 }
+

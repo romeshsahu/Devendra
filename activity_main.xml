@@ -1,0 +1,40 @@
+
+<!-- A DrawerLayout is intended to be used as the top-level content view using match_parent for both width and height to consume the full space available. -->
+<android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/drawer_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <FrameLayout
+        android:id="@+id/content_frame"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <LinearLayout
+        android:id="@+id/left_drawer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:orientation="vertical" >
+
+        <ImageView
+            android:id="@+id/header_image"
+            android:layout_width="400dp"
+            android:layout_height="150dp"
+            android:src="@drawable/courier_eaplha" />
+
+        <ExpandableListView
+            android:id="@+id/navList"
+            android:layout_width="290dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="left|start"
+            android:background="@drawable/drawer4"
+            android:divider="#00001a"
+            android:dividerHeight="1dp"
+            android:groupIndicator="@null"
+            android:indicatorLeft="?android:attr/expandableListPreferredItemIndicatorLeft" />
+        <!-- android:background="#484848" -->
+
+    </LinearLayout>
+
+</android.support.v4.widget.DrawerLayout>

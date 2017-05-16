@@ -115,17 +115,27 @@ public class CartAdapter extends BaseAdapter {
         }
 
         try {
-            holder.product_colour.setText("colour-"
-                    + cartsDTOs.get(position).getColor_name());
+            if (cartsDTOs.get(position).getColor_name().length() > 0) {
+                holder.product_colour.setText("colour-"
+                        + cartsDTOs.get(position).getColor_name());
+            } else {
+                holder.product_colour.setText("");
+            }
         } catch (Exception e) {
             // TODO: handle exception
+            holder.product_colour.setText("");
         }
 
         try {
-            holder.product_size.setText("size-"
-                    + cartsDTOs.get(position).getSize());
+            if (cartsDTOs.get(position).getSize().length() > 0) {
+                holder.product_size.setText("size-"
+                        + cartsDTOs.get(position).getSize());
+            } else {
+                holder.product_size.setText("");
+            }
         } catch (Exception e) {
             // TODO: handle exception
+            holder.product_size.setText("");
         }
 
         holder.remove_view.setOnClickListener(new OnClickListener() {

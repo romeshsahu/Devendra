@@ -83,7 +83,8 @@ public class ProductDetailActivityPP extends Activity {
         try {
             product_link_popular = getIntent().getStringExtra(
                     "product_link_popular");
-            System.out.println("product_link_popular..." + product_link_popular);
+            System.out
+                    .println("product_link_popular..." + product_link_popular);
         } catch (Exception e) {
             // TODO: handle exception
         }
@@ -323,6 +324,13 @@ public class ProductDetailActivityPP extends Activity {
                 } catch (Exception e) {
 
                 }
+                try {
+                    MainActivity.cartsDTO.setSize(sizes.get(0));
+                    MainActivity.cartsDTO.setColor_code(color_codes.get(0));
+                    MainActivity.cartsDTO.setColor_name(color_names.get(0));
+                } catch (Exception e) {
+
+                }
                 // for slider on top
                 JSONObject sliderImageObject = productDataObject.getJSONArray(
                         "product_image").getJSONObject(0);
@@ -373,8 +381,8 @@ public class ProductDetailActivityPP extends Activity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.product_detail, menu);
-        RelativeLayout badgeLayout = (RelativeLayout) menu.findItem(R.id.action_cart)
-                .getActionView();
+        RelativeLayout badgeLayout = (RelativeLayout) menu.findItem(
+                R.id.action_cart).getActionView();
         mCounter = (TextView) badgeLayout.findViewById(R.id.counter);
         setBadgeOnCartTest();
         badgeLayout.setOnClickListener(new OnClickListener() {
@@ -455,13 +463,6 @@ public class ProductDetailActivityPP extends Activity {
             try {
                 // {"add_to_cart":{"message":"Product successfully added to your shopping cart","status":"Success"}}
                 // {"customer_remove_add_to_cart":{"status":"Success","message":"Product Remove successfully"}}
-                try {
-                    MainActivity.cartsDTO.setSize(sizes.get(0));
-                    MainActivity.cartsDTO.setColor_code(color_codes.get(0));
-                    MainActivity.cartsDTO.setColor_name(color_names.get(0));
-                } catch (Exception e) {
-
-                }
                 System.out.println("add_to_cart..." + jsonObject.toString());
                 JSONObject add_to_cart = null;
                 if (jsonObject.has("add_to_cart")) {
@@ -577,6 +578,11 @@ public class ProductDetailActivityPP extends Activity {
             size_text.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    try {
+                        MainActivity.cartsDTO.setSize(sizes.get(v.getId()));
+                    } catch (Exception e) {
+
+                    }
                     if (id_size == -1) {
                         id_size = v.getId();
                         size_text.setBackgroundColor(Color
@@ -633,3 +639,4 @@ public class ProductDetailActivityPP extends Activity {
     }
 
 }
+

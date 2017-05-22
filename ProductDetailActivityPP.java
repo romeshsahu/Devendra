@@ -1,6 +1,7 @@
 package com.ealpha.homeclick;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import org.apache.http.NameValuePair;
@@ -10,6 +11,7 @@ import org.json.JSONObject;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -28,6 +30,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ealpha.R;
+import com.ealpha.drawer.SignInActivity;
 import com.ealpha.main.MainActivity;
 import com.ealpha.support.ImageGalleryProductAdapter;
 import com.ps.DTO.CartColorSizeDTO;
@@ -53,6 +56,7 @@ public class ProductDetailActivityPP extends Activity {
     private boolean is_same_size;
     String default_color_code = "#000000";
     private TextView mCounter;
+    private String vKeyValue = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -124,6 +128,7 @@ public class ProductDetailActivityPP extends Activity {
                 if (!sessionManager.isLogin()) {
                     Toast.makeText(ProductDetailActivityPP.this,
                             "User not logged in.", Toast.LENGTH_SHORT).show();
+                    startActivity(new Intent(ProductDetailActivityPP.this, SignInActivity.class));
                     return;
                 }
                 vProduct_ID = product_link_popular
@@ -143,6 +148,7 @@ public class ProductDetailActivityPP extends Activity {
                 }
             }
         });
+        // new popular_p_AsynchTask().execute("http://ealpha.com//mob/customers.php?get_data=product_data&product_id=8323");
         new popular_p_AsynchTask().execute(product_link_popular);
     }
 
@@ -292,8 +298,26 @@ public class ProductDetailActivityPP extends Activity {
                     // TODO: handle exception
                 }
                 try {
-                    txt_color.setText(productDataObject
-                            .getString("product_attribute"));
+                    JSONObject product_attribute = productDataObject.getJSONObject("product_attribute");
+                    Iterator<String> iterator = product_attribute.keys();
+                    if (iterator != null) {
+                        if (iterator.hasNext()) {
+                            // is key value ko add kar lena jab add to cart kro to okay
+                            vKeyValue = iterator.next();
+                            System.out.println("vKeyValue..." + vKeyValue);
+                        }
+                    }
+                    if (vKeyValue != null) {
+                        if (vKeyValue.length() > 0) {
+                            JSONObject attributeObject = product_attribute.getJSONArray(vKeyValue).getJSONObject(0);
+                            if (attributeObject.getString("attribute_name").equals("Color")) {
+                                System.out.println("Value..." + attributeObject.getString("value"));
+                                System.out.println("Color..." + attributeObject.getString("color"));
+                                color_names.add(attributeObject.getString("value"));
+                                color_codes.add(attributeObject.getString("color"));
+                            }
+                        }
+                    }
                 } catch (Exception e) {
                     // TODO: handle exception
                 }
@@ -448,6 +472,12 @@ public class ProductDetailActivityPP extends Activity {
                     .getUserDetail().getCustomer_id()));
             params.add(new BasicNameValuePair("id_product", vProduct_ID));
             params.add(new BasicNameValuePair("quantity", "1"));
+            if (vKeyValue == null) {
+                vKeyValue = "";
+            }
+            System.out.println("vKeyValue...." + vKeyValue);
+            // "yeha par parameter name likh lena sir"
+            // params.add(new BasicNameValuePair("yeha par parameter name likh lena sir", vKeyValue));
             System.out.println("params..." + params.toString());
             // [id_customer=8057, id_product=9572, quantity=1]
             JSONObject json = new JSONParser().makeHttpRequest2(args[0],
@@ -538,6 +568,7 @@ public class ProductDetailActivityPP extends Activity {
             }
             setBadgeOnCartTest();
         }
+
     }
 
     public void setSize() {
@@ -570,6 +601,7 @@ public class ProductDetailActivityPP extends Activity {
                     size_text.setText(sizes.get(i) + "");
                 }
             }
+
             size_text.setAllCaps(true);
             size_text.setGravity(Gravity.CENTER);
             size_text.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
@@ -639,4 +671,3 @@ public class ProductDetailActivityPP extends Activity {
     }
 
 }
-
